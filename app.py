@@ -1,7 +1,7 @@
 ﻿"""Streamlit interface for the text emotion classifier."""
 
 from pathlib import Path
-import pickle
+import joblib
 
 import streamlit as st
 
@@ -12,10 +12,8 @@ MODELS = ROOT / "models"
 @st.cache_resource
 def load_artifacts():
     """Load the trained classifier and its text vectorizer once per session."""
-    with (MODELS / "emotion_model.pkl").open("rb") as file:
-        model = pickle.load(file)
-    with (MODELS / "tfidf_vectorizer.pkl").open("rb") as file:
-        vectorizer = pickle.load(file)
+    model = joblib.load(MODELS / "emotion_model.pkl")
+    vectorizer = joblib.load(MODELS / "tfidf_vectorizer.pkl")
     return model, vectorizer
 
 

@@ -6,3 +6,4 @@ joblib==1.5.3
 scikit-learn==1.9.0
 numpy==2.4.6
 nltk==3.10.0
+contractions

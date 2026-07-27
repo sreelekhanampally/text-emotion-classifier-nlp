@@ -20,11 +20,21 @@ class ModelBundle:
 
 def load_model_bundle(settings: Settings) -> ModelBundle:
     bundle_path = Path(settings.model_bundle_path).resolve()
+
     artifact_paths = {
         "model": bundle_path / "emotion_model.pkl",
         "vectorizer": bundle_path / "tfidf_vectorizer.pkl",
         "label_classes": bundle_path / "label_classes.pkl",
     }
+    print(f"Bundle Path: {bundle_path}")
+
+    for name, path in artifact_paths.items():
+        print(f"{name}: {path}")
+
+    print("\n========== Loading Model Artifacts ==========")
+    for name, path in artifact_paths.items():
+        print(f"{name}: {path}")
+    print("=============================================\n")
 
     missing = [name for name, path in artifact_paths.items() if not path.is_file() or path.stat().st_size == 0]
     if missing:

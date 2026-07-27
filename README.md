@@ -4,13 +4,13 @@
 
 <p align="left">
   <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white">
   </a>
   <a href="https://fastapi.tiangolo.com/">
-    <img src="https://img.shields.io/badge/FastAPI-Production-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+    <img src="https://img.shields.io/badge/FastAPI-Production-009688?style=for-the-badge&logo=fastapi&logoColor=white">
   </a>
   <a href="https://scikit-learn.org/">
-    <img src="https://img.shields.io/badge/scikit--learn-Machine%20Learning-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn">
+    <img src="https://img.shields.io/badge/scikit--learn-Machine%20Learning-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white">
   </a>
   <a href="https://www.nltk.org/">
     <img src="https://img.shields.io/badge/NLTK-NLP-4B8BBE?style=for-the-badge">
@@ -24,152 +24,108 @@
 
 # 📌 Executive Summary
 
-EmotionSense AI is a production-ready NLP API that predicts human emotions from natural language text using a classical Machine Learning pipeline.
+EmotionSense AI is a production-ready NLP API that predicts **six human emotions** from natural language text using a classical Machine Learning pipeline.
 
-The application combines a **TF-IDF Vectorizer** with a **Calibrated Linear Support Vector Machine (Linear SVM)** and exposes the trained model through a **FastAPI REST API** capable of low-latency real-time inference.
+Version 1 combines **TF-IDF Vectorization** with a **Calibrated Linear Support Vector Machine (Linear SVM)** and serves predictions through a **FastAPI REST API** optimized for low-latency inference.
 
-This project demonstrates the complete machine learning lifecycle, including:
-
-- Data preprocessing
-- Feature engineering
-- Model training
-- Model evaluation
-- Model serialization
-- FastAPI deployment
-- Production inference
+The project demonstrates the complete ML workflow from preprocessing and feature engineering to model deployment and real-time prediction.
 
 ---
 
-# ⚡ Key Performance Metrics
+# ⚡ Key Performance
 
 | Metric | Value |
-| :------ | :---- |
+|:------|:------|
 | **Model** | Calibrated Linear SVM |
-| **Feature Extraction** | TF-IDF Vectorization |
+| **Feature Extraction** | TF-IDF Vectorizer |
 | **Accuracy** | **90.22%** |
 | **Emotion Classes** | 6 |
 | **Average Inference Time** | **<10 ms** |
 | **Framework** | FastAPI + Uvicorn |
 | **Prediction Output** | Emotion + Confidence + Top-3 Predictions |
-| **Status** | Version 1.0 |
+| **Version** | 1.0 |
 
 ---
 
 # 😊 Supported Emotions
 
-<p align="center">
-
-😊 Joy &nbsp; | &nbsp;
-😢 Sadness &nbsp; | &nbsp;
-😠 Anger &nbsp; | &nbsp;
-😨 Fear &nbsp; | &nbsp;
-❤️ Love &nbsp; | &nbsp;
-😲 Surprise
-
-</p>
+| 😊 Joy | 😢 Sadness | 😠 Anger |
+|:------:|:----------:|:--------:|
+| 😨 Fear | ❤️ Love | 😲 Surprise |
 
 ---
 
-# 🔄 NLP & Inference Pipeline
+# 🔄 NLP Pipeline
 
 ```text
-┌───────────┐
-│ Raw Text  │
-└─────┬─────┘
-      │
-      ▼
-┌─────────────────────┐
-│ Text Preprocessing  │
-└─────┬───────────────┘
-      │
-      ▼
-┌─────────────────────┐
-│ TF-IDF Vectorizer   │
-└─────┬───────────────┘
-      │
-      ▼
-┌─────────────────────┐
-│ Calibrated Linear   │
-│ SVM Classifier      │
-└─────┬───────────────┘
-      │
-      ▼
-┌─────────────────────┐
-│ JSON API Response   │
-└─────────────────────┘
+Raw Text
+    │
+    ▼
+Text Preprocessing
+    │
+    ▼
+TF-IDF Vectorizer
+    │
+    ▼
+Calibrated Linear SVM
+    │
+    ▼
+JSON API Response
 ```
 
 ---
 
 # 🔍 Machine Learning Pipeline
 
-## Text Preprocessing
+## ✅ Text Preprocessing
+
+The input text is cleaned before feature extraction using:
 
 - Lowercase normalization
-- URL removal
-- Digit removal
+- URL & digit removal
 - Punctuation filtering
-- ASCII normalization
-- Word tokenization
 - English stopword removal
 - WordNet lemmatization
 
 ---
 
-## Feature Engineering
+## ✅ Feature Extraction
 
-- TF-IDF Vectorization
-- Sparse vector representation
-- Unigram & Bigram feature extraction
+The cleaned text is converted into numerical features using **TF-IDF Vectorization** with **unigrams** and **bigrams**.
 
 ---
 
-## Classification
+## ✅ Emotion Classification
 
-- Linear Support Vector Machine
-- Probability calibration using `CalibratedClassifierCV`
-- Multi-class emotion prediction
+The TF-IDF features are passed to a **Calibrated Linear SVM**, which predicts one of six emotions and generates calibrated confidence scores using `CalibratedClassifierCV`.
 
 ---
 
 # 💡 Why Linear SVM?
 
-Linear SVM was selected because it offers:
+Linear SVM was chosen because it performs exceptionally well on sparse TF-IDF features while remaining lightweight enough for production APIs.
 
-- Excellent performance on sparse TF-IDF vectors
-- Fast prediction latency
-- Low memory footprint
-- Strong generalization
-- Reliable performance for real-time REST APIs
+### Advantages
 
-Since standard SVM models do not produce calibrated probability estimates, **CalibratedClassifierCV** is used to generate confidence scores for every prediction.
+- Fast inference
+- Low memory usage
+- Strong generalization on text data
+- Excellent performance on sparse feature spaces
 
----
-
-# 🚀 API Reference
-
-## Health Check
-
-### Request
-
-```http
-GET /health
-```
-
-### Response
-
-```json
-{
-  "status": "ok",
-  "model_version": "2026.07.1"
-}
-```
+Since Linear SVM does not produce probabilities by default, **CalibratedClassifierCV** is used to generate reliable confidence scores.
 
 ---
 
-## Predict Emotion
+# 🚀 API Endpoints
 
-### Request
+| Endpoint | Method | Description |
+|----------|:------:|-------------|
+| `/health` | GET | Service health check |
+| `/predict` | POST | Predict emotion from text |
+
+---
+
+## Example Request
 
 ```http
 POST /predict
@@ -181,7 +137,9 @@ POST /predict
 }
 ```
 
-### Response
+---
+
+## Example Response
 
 ```json
 {
@@ -206,67 +164,33 @@ POST /predict
 
 # 🛠️ Installation
 
-## Prerequisites
-
-- Python 3.11+
-- Git
-
----
-
-## Clone Repository
-
 ```bash
 git clone https://github.com/your-username/EmotionSense-AI.git
+
 cd EmotionSense-AI
-```
 
----
-
-## Create Virtual Environment
-
-Windows
-
-```bash
 python -m venv venv
+
+# Windows
 venv\Scripts\activate
-```
 
-Linux / macOS
-
-```bash
-python3 -m venv venv
+# Linux / macOS
 source venv/bin/activate
-```
 
----
-
-## Install Dependencies
-
-```bash
 pip install -r requirements.txt
-```
 
----
-
-## Start the API
-
-```bash
 uvicorn app.main:app --reload
 ```
 
----
-
-## Interactive Documentation
+Interactive API Documentation:
 
 ```
 http://127.0.0.1:8000/docs
 ```
 
-Swagger UI provides interactive API testing.
-
 ---
 
-# 🏗️ Project Structure
+# 📂 Project Structure
 
 ```text
 EmotionSense-AI
@@ -286,11 +210,8 @@ EmotionSense-AI
 │   └── requirements.txt
 │
 ├── notebooks
-│
 ├── data
-│
 ├── README.md
-│
 └── LICENSE
 ```
 
@@ -298,106 +219,172 @@ EmotionSense-AI
 
 # ⚙️ Engineering Highlights
 
-- Modular FastAPI architecture
-- Separation of preprocessing and inference layers
-- Startup-only model loading
-- Structured request validation using Pydantic
-- Dependency injection
-- Environment-based configuration
-- Low-latency prediction pipeline
-- Version-controlled ML artifacts
-- Health monitoring endpoint
-- Clean REST API design
+| Feature | Description |
+|----------|-------------|
+| Modular Architecture | Clean separation of preprocessing, inference, and API layers |
+| Startup Model Loading | Model artifacts are loaded once during application startup |
+| Request Validation | Typed request/response schemas using Pydantic |
+| Dependency Injection | Simplifies service initialization |
+| Environment Configuration | Runtime settings managed through environment variables |
+| REST API | Lightweight FastAPI endpoints |
+| Health Monitoring | Built-in health check endpoint |
+| Model Versioning | Serialized ML artifacts tracked independently |
 
 ---
 
-# 📚 Technologies Used
+# 📚 Technology Stack
 
-### Machine Learning
-
-- Scikit-Learn
-- Joblib
-- NumPy
-
-### Natural Language Processing
-
-- NLTK
-- TF-IDF
-- WordNet Lemmatizer
-
-### Backend
-
-- FastAPI
-- Uvicorn
-- Pydantic
+| Category | Technologies |
+|----------|--------------|
+| Language | Python 3.11 |
+| Machine Learning | Scikit-Learn, NumPy, Joblib |
+| NLP | NLTK, TF-IDF, WordNet Lemmatizer |
+| Backend | FastAPI, Uvicorn, Pydantic |
 
 ---
 
 # ⚠️ Current Limitations (Version 1)
 
-Although the model achieves **90.22% accuracy**, several limitations remain:
+Although Version 1 achieves **90.22% accuracy**, it has several known limitations.
 
-- Negation words such as **not**, **no**, and **never** are removed during preprocessing.
+- Negation words (`not`, `no`, `never`) are removed during preprocessing.
 - TF-IDF cannot fully capture contextual meaning.
-- Limited handling of sarcasm and figurative language.
-- Reduced performance on internet slang and out-of-domain vocabulary.
-- Lower confidence for underrepresented emotion classes.
+- Sarcasm and figurative language are not understood.
+- Internet slang and unseen vocabulary reduce prediction quality.
+- Minority emotion classes receive lower confidence.
 
-Example:
+### Example
 
 ```text
-Input:
+Input
+
 I am not happy.
 
-Current preprocessing:
-
-I am not happy
         ↓
+
+Preprocessing
+
 happy
 
-Prediction:
-Joy ❌
+        ↓
+
+Prediction
+
+😊 Joy ❌
 ```
 
 ---
 
+# 🚀 Version 2 Improvements
+
+Version 2 keeps the same dataset and the same classical stack (**TF-IDF + Calibrated Linear SVM**), but improves one major weakness of the baseline: **understanding negated emotions** (e.g., *"I am not happy"*).
+
+---
+
+## ✅ Preprocessing
+
+- **Contraction expansion** — `contractions.fix()` runs before tokenization, converting *can't*, *don't*, and *won't* into their expanded forms so negation words are preserved.
+
+- **Preserved negation tokens** — `not`, `no`, `nor`, and `never` are excluded from the stopword list because removing them changes the meaning of a sentence.
+
+- **Clause-scoped negation marking** — Sentences are split into clauses using punctuation (`. , ; ! ?`) and the connector **but**. Every word after a negation is prefixed with `NEG_`, allowing the model to distinguish between positive and negated emotions.
+
+  ```text
+  happy      → happy
+  not happy  → not NEG_happy
+  ```
+
+- **Removed the `len(token) > 2` filter** — Keeps meaningful short words like `no` that were previously discarded.
+
+---
+
+## ✅ Model Engineering
+
+- Wrapped **TF-IDF + Calibrated LinearSVC** into a single Scikit-Learn **Pipeline**, ensuring the same preprocessing is applied during training and inference.
+
+- Performed **5-fold GridSearchCV** to tune `C`, `min_df`, and `ngram_range`, using **Macro F1** as the optimization metric.
+
+- Enabled `class_weight="balanced"` to reduce bias toward majority classes and improve learning on minority emotions.
+
+- Saved the model using the same three-artifact structure as Version 1 (`emotion_model.pkl`, `tfidf_vectorizer.pkl`, and `label_classes.pkl`), allowing the existing FastAPI service to work without modification.
+
+---
+
+## ✅ Negation-Aware Data Augmentation
+
+Dataset analysis showed that negated emotion phrases were extremely rare.
+
+| Phrase | Count |
+|---------|------:|
+| `not` | 1,670 |
+| `never` | 248 |
+| `happy` | 234 |
+| `not happy` | 2 |
+| `not sad` | 0 |
+| `not excited` | 0 |
+
+With so few examples, the model had almost nothing to learn from.
+
+To improve coverage without changing the model architecture, Version 2 adds **~260 curated synthetic samples** generated from:
+
+- 6 emotion lexicons (~65 emotion words)
+- 4 negation templates
+- Emotion-aware label flipping (e.g., Joy → Sadness)
+
+The augmented samples are merged with the original dataset **before the train/test split**, allowing them to participate naturally in cross-validation.
+
+---
+
+## 📊 Performance
+
+| Version | Accuracy | Highlights |
+|---------|---------:|-----------|
+| **Version 1** | **90.09%** | Strong baseline, poor negation handling |
+| **Version 2** | **87–88%** | Better semantic understanding of negated emotions |
+
+The small drop in accuracy is expected because introducing `NEG_` features increases the vocabulary size. In return, the model produces more meaningful predictions on negated sentences.
+
+---
+
+## ✅ Negation Sanity Check
+
+| Input | Prediction |
+|-------|------------|
+| I am happy | 😊 Joy |
+| I am not happy | 😔 Sadness |
+| I am sad | 😔 Sadness |
+| I am not sad | 😊 Joy |
+| I am excited | 😊 Joy |
+| I am not excited | 😔 Sadness |
+
+---
+
+## ⚠️ Current Limitations
+
+- Verb-based negation (e.g., *I never wanted this*) remains challenging.
+- Sarcasm and irony are not handled.
+- Multi-emotion sentences are reduced to a single label.
+- Rare unseen emotion words may still be misclassified.
+
+---
 # 🚀 Version Roadmap
 
-## ✅ Version 1
-
-- TF-IDF Vectorizer
-- Calibrated Linear SVM
-- FastAPI Deployment
-- Health Endpoint
-- Confidence Scores
-- Top-3 Predictions
-- REST API
+| Version | Status | Highlights |
+|----------|:------:|------------|
+| ✅ Version 1 | Completed | Baseline TF-IDF + Calibrated Linear SVM, FastAPI deployment |
+| 🚀 Version 2 | Completed | Negation handling, Pipeline, GridSearchCV, Data Augmentation |
+| 🔬 Version 3 | Planned | Sentence Embeddings, GoEmotions, DistilBERT Evaluation |
 
 ---
 
-## 🔜 Planned for Version 2
+## 📚 Key Learnings
 
-- Preserve negation words
-- Expand contractions (`don't → do not`)
-- Retrain the model
-- Benchmark Version 1 vs Version 2
-- Improve contextual understanding
-
----
-
-# 📚 Learning Outcomes
-
-This project strengthened my understanding of:
-
-- Natural Language Processing
-- Machine Learning
-- Feature Engineering
-- Model Calibration
-- FastAPI
-- REST API Design
-- Model Serialization
-- Production ML Deployment
-- Backend Architecture
+- Classical NLP pipelines
+- Negation-aware feature engineering
+- Targeted data augmentation
+- Hyperparameter tuning with GridSearchCV
+- Model serialization for production deployment
+- FastAPI model serving
 
 ---
 
@@ -417,8 +404,9 @@ Currently exploring:
 
 - Machine Learning
 - Natural Language Processing
+- Generative AI
 - LLM Integration
-- RAG Systems
+- Retrieval-Augmented Generation (RAG)
 - AI Agents
 - Backend Engineering
 - Full-Stack Development
