@@ -1,17 +1,26 @@
-# Virtual environment
-venv/
+# Virtual Environments
 .venv/
+venv/
+env/
+emoenv/
 
-# Python cache
+# Python
 __pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment Variables
+.env
+
 *.pyc
 
 # IDE
 .vscode/
 .idea/
 
-# Environment variables
-.env
 
 # Streamlit cache
 .streamlit/

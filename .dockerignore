@@ -1,0 +1,9 @@
+﻿.git/
+**/__pycache__/
+**/*.py[cod]
+**/.env
+emoenv/
+backend/node_modules/
+frontend/node_modules/
+notebooks/
+screenshots/
