@@ -11,8 +11,13 @@ WORKDIR /app
 
 COPY requirements.txt /tmp/requirements.txt
 
-RUN pip install --no-cache-dir -r /tmp/requirements.txt \
-    && python -m nltk.downloader -d /app/nltk_data punkt_tab stopwords wordnet
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+RUN mkdir -p /app/nltk_data
+
+RUN python -m nltk.downloader -d /app/nltk_data punkt_tab stopwords wordnet
+
+RUN find /app/nltk_data
 
 COPY app /app/app
 COPY models /app/models
