@@ -4,10 +4,11 @@ from pathlib import Path
 import joblib
 
 import streamlit as st
+    
 
-ROOT = Path(__file__).resolve().parent
-MODELS = ROOT / "models"
-
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+MODELS = PROJECT_ROOT / "ai-service" / "models"
+ 
 
 @st.cache_resource
 def load_artifacts():

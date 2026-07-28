@@ -1,29 +1,68 @@
+# ==========================
+# Node.js
+# ==========================
+backend/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================
+# Python
+# ==========================
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.coverage
+**/htmlcov/
+
 # Virtual Environments
 .venv/
 venv/
 env/
 emoenv/
+testenv/
 
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-
-# Jupyter
-.ipynb_checkpoints/
-
+# ==========================
 # Environment Variables
-.env
+# ==========================
+**/.env
 
-*.pyc
+# Keep example env files
+!**/.env.example
 
+# ==========================
 # IDE
+# ==========================
 .vscode/
 .idea/
 
-
-# Streamlit cache
-.streamlit/
-
-# macOS
+# ==========================
+# OS Files
+# ==========================
 .DS_Store
+Thumbs.db
+
+# ==========================
+# Jupyter
+# ==========================
+.ipynb_checkpoints/
+
+# ==========================
+# Build
+# ==========================
+dist/
+build/
+
+# ==========================
+# Logs
+# ==========================
+*.log
+
+# ==========================
+# IMPORTANT
+# ==========================
+# DO NOT ignore model artifacts
+# emotion_model.pkl
+# tfidf_vectorizer.pkl
+# label_classes.pkl

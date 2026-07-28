@@ -1,6 +1,4 @@
-﻿# Build from repository root:
-# docker build -f ai-service/Dockerfile -t emotionsense-ai-service .
-FROM python:3.11-slim
+﻿FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -13,11 +11,13 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 COPY ai-service/requirements.txt /tmp/requirements.txt
+
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && python -m nltk.downloader -d /app/nltk_data punkt_tab stopwords wordnet
 
 COPY ai-service/app /app/app
-COPY models /app/models
+COPY ai-service/models /app/models
+COPY ai-service/.env.example /app/.env.example
 
 RUN useradd --create-home --uid 10001 appuser \
     && chown -R appuser:appuser /app

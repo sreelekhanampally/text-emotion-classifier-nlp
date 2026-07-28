@@ -13,10 +13,6 @@ from app.core.logging import configure_logging
 from app.inference.service import PredictionService, load_model_bundle
 from app.preprocessing.text import build_preprocessor
 
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parent
-MODELS = ROOT / "models"
 
 
 @asynccontextmanager
