@@ -15,9 +15,10 @@ COPY ai-service/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && python -m nltk.downloader -d /app/nltk_data punkt_tab stopwords wordnet
 
-COPY ai-service/app /app/app
-COPY ai-service/models /app/models
-COPY ai-service/.env.example /app/.env.example
+COPY requirements.txt /tmp/requirements.txt
+COPY app /app/app
+COPY models /app/models
+COPY .env.example /app/.env.example
 
 RUN useradd --create-home --uid 10001 appuser \
     && chown -R appuser:appuser /app
@@ -26,4 +27,4 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1", "--proxy-headers"]
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1 --proxy-headers"]
