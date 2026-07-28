@@ -18,6 +18,20 @@ Production-ready full-stack AI application for real-time emotion classification 
 
 ---
 
+# 🌐 Live Demo
+
+| Component | URL |
+|-----------|-----|
+| 🎨 **Frontend (React on Vercel)** | https://text-emotion-classifier-nlp-nsree.vercel.app/ |
+| 🔗 **Backend API (Express on Render)** | https://emotionsense-backend-yqmq.onrender.com |
+| 🧠 **AI Inference Service (FastAPI on Render)** | https://text-emotion-classifier-nlp.onrender.com |
+| 📚 **AI Service Swagger Docs** | https://text-emotion-classifier-nlp.onrender.com/docs |
+| ❤️ **AI Service Health Check** | https://text-emotion-classifier-nlp.onrender.com/health |
+
+> The Render free tier spins services down after inactivity. The first request after a cold start may take 30–60 seconds; subsequent requests respond in milliseconds.
+
+---
+
 # Overview
 
 EmotionSense AI demonstrates an end-to-end machine learning system, covering data preprocessing, model training, API serving, deployment, and frontend integration.
@@ -50,7 +64,7 @@ The repository contains four independent but connected components:
                       │
                       ▼
         FastAPI AI Inference Service
-      (Hugging Face Docker Spaces)
+                  (Render)
                       │
                       ▼
          TF-IDF + Calibrated Linear SVM
@@ -113,6 +127,12 @@ EmotionSense-AI
 ├── backend/
 │   ├── src/
 │   ├── tests/
+│   ├── package.json
+│   └── .env.example
+│
+├── frontend/
+│   ├── src/
+│   ├── public/
 │   ├── package.json
 │   └── .env.example
 │
@@ -179,7 +199,7 @@ The repository separates training, inference, backend services, frontend, and de
 | NLP | TF-IDF, NLTK, WordNet |
 | Validation | Pydantic |
 | Containerization | Docker |
-| Deployment | Hugging Face Spaces, Render, Vercel |
+| Deployment | Render, Vercel |
 
 ---
 
@@ -208,6 +228,8 @@ The repository separates training, inference, backend services, frontend, and de
 
 # API Reference
 
+**Base URL (production):** `https://text-emotion-classifier-nlp.onrender.com`
+
 ## Endpoints
 
 | Method | Endpoint | Description |
@@ -227,6 +249,14 @@ POST /predict
 {
   "text": "I got selected for my dream company!"
 }
+```
+
+### cURL
+
+```bash
+curl -X POST https://text-emotion-classifier-nlp.onrender.com/predict \
+  -H "Content-Type: application/json" \
+  -d '{"text": "I got selected for my dream company!"}'
 ```
 
 ---
@@ -272,6 +302,8 @@ cd EmotionSense-AI
 
 ## AI Service
 
+FastAPI inference service serving the TF-IDF + Calibrated Linear SVM model.
+
 ```bash
 cd ai-service
 
@@ -288,21 +320,67 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
+Local service will be available at `http://127.0.0.1:8000` with interactive docs at `http://127.0.0.1:8000/docs`.
+
 ---
 
 ## Backend
 
+Express.js API that mediates between the frontend and the FastAPI inference service.
+
 ```bash
 cd backend
 
+# Install dependencies
 npm install
 
+# Configure environment
+cp .env.example .env
+# Then edit .env and set:
+#   PORT=5000
+#   AI_SERVICE_URL=http://127.0.0.1:8000    # or the deployed AI service URL
+
+# Start development server
 npm run dev
+```
+
+Local backend will run at `http://127.0.0.1:5000`.
+
+---
+
+## Frontend
+
+React + Vite application that consumes the Express backend.
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.example .env
+# Then edit .env and set:
+#   VITE_BACKEND_URL=http://127.0.0.1:5000   # or the deployed backend URL
+
+# Start development server
+npm run dev
+```
+
+Local frontend will run at `http://127.0.0.1:5173`.
+
+**Production build:**
+
+```bash
+npm run build
+npm run preview
 ```
 
 ---
 
 ## Streamlit Demo
+
+Standalone quick-experimentation UI that loads the model directly.
 
 ```bash
 cd ai-demo
@@ -314,24 +392,30 @@ streamlit run app.py
 
 ---
 
-Interactive API documentation:
+Interactive API documentation (local):
 
 ```
 http://127.0.0.1:8000/docs
+```
+
+Interactive API documentation (production):
+
+```
+https://text-emotion-classifier-nlp.onrender.com/docs
 ```
 
 ---
 
 # Deployment
 
-| Component | Platform |
-|-----------|----------|
-| Frontend | Vercel |
-| Backend | Render |
-| AI Service | Hugging Face Docker Spaces |
-| Demo Application | Hugging Face Spaces |
+| Component | Platform | Live URL |
+|-----------|----------|----------|
+| Frontend | Vercel | https://text-emotion-classifier-nlp-nsree.vercel.app/ |
+| Backend | Render | https://emotionsense-backend-yqmq.onrender.com |
+| AI Service | Render | https://text-emotion-classifier-nlp.onrender.com |
+| Demo Application | Streamlit / Local | — |
 
-The frontend communicates with the Express backend, which forwards inference requests to the FastAPI AI service running as a Docker container. This separation enables independent deployment, scaling, and future model upgrades without impacting the client application.
+The frontend communicates with the Express backend, which forwards inference requests to the FastAPI AI service running as a container on Render. This separation enables independent deployment, scaling, and future model upgrades without impacting the client application.
 
 ---
 # Engineering Highlights
@@ -514,6 +598,7 @@ The next iteration will focus on contextual language understanding while preserv
 - [x] Negation-aware preprocessing
 - [x] Hyperparameter tuning with GridSearchCV
 - [x] Targeted synthetic data augmentation
+- [x] Full-stack deployment (Frontend + Backend + AI Service)
 - [ ] Transformer-based emotion classification
 - [ ] Expanded emotion taxonomy
 - [ ] Multi-label emotion prediction
