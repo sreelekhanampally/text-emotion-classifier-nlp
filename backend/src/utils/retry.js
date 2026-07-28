@@ -1,7 +1,7 @@
 export async function retry(fn, options = {}) {
   const {
-    retries = 1,
-    delay = 5000,
+    retries = 3,
+    delay = 20000,
     shouldRetry = () => true
   } = options;
 
