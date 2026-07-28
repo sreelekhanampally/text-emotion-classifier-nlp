@@ -15,7 +15,10 @@ _URL_PATTERN = re.compile(r"http\S+|www\S+")
 _DIGIT_PATTERN = re.compile(r"\d+")
 _CLAUSE_SPLIT_PATTERN = re.compile(r"[.,;!?]+")
 _PUNCTUATION_TABLE = str.maketrans("", "", string.punctuation)
-_REQUIRED_NLTK_RESOURCES = ("tokenizers/punkt_tab", "corpora/stopwords", "corpora/wordnet")
+_REQUIRED_NLTK_RESOURCES = (
+    "tokenizers/punkt_tab",
+    "corpora/stopwords",
+)
 
 # Must match the notebook exactly — training vocabulary uses these tokens.
 _NEGATIONS = frozenset({"not", "no", "nor", "never"})
@@ -93,7 +96,20 @@ def build_preprocessor(settings: Settings) -> TextPreprocessor:
                 f"Required NLTK resource '{resource}' is unavailable at {nltk_data_path}. "
                 "Install NLTK resources during the image build."
             ) from error
-
+    # Check WordNet (works for both extracted and zipped versions)
+    try:
+        nltk.data.find("corpora/wordnet")
+        print("✓ Found extracted WordNet")
+    except LookupError:
+        try:
+            nltk.data.find("corpora/wordnet.zip")
+            print("✓ Found zipped WordNet")
+        except LookupError as error:
+            raise RuntimeError(
+                f"Required NLTK resource 'wordnet' is unavailable at {nltk_data_path}. "
+                "Install NLTK resources during the image build."
+            ) from error
+        
     stop_words = set(stopwords.words("english"))
 
     # Preserve negation words (both bare and contracted forms; contractions
