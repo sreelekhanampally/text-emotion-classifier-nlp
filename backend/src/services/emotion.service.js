@@ -4,11 +4,19 @@ import { AppError } from "../middleware/errors.js";
 export async function predictEmotion({ text, requestId }) {
   const prediction = await requestPrediction({ text, requestId });
 
+  const normalized = {
+    emotion: prediction.emotion,
+    confidence: prediction.confidence,
+    topPredictions: prediction.top_predictions,
+    probabilities: prediction.probabilities,
+    modelVersion: prediction.model_version,
+    processingTimeMs: prediction.processing_time_ms
+  };
+
   if (
-    !prediction ||
-    typeof prediction.emotion !== "string" ||
-    typeof prediction.confidence !== "number" ||
-    typeof prediction.modelVersion !== "string"
+    typeof normalized.emotion !== "string" ||
+    typeof normalized.confidence !== "number" ||
+    typeof normalized.modelVersion !== "string"
   ) {
     throw new AppError({
       status: 503,
@@ -17,5 +25,5 @@ export async function predictEmotion({ text, requestId }) {
     });
   }
 
-  return prediction;
+  return normalized;
 }

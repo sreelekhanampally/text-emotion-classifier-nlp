@@ -8,11 +8,7 @@ export async function predictEmotionController(req, res) {
   });
 
   return sendSuccess(res, {
-    data: {
-      emotion: prediction.emotion,
-      confidence: prediction.confidence,
-      modelVersion: prediction.modelVersion
-    },
+    data: prediction,
     meta: {
       requestId: req.requestId,
       processedAt: new Date().toISOString()
