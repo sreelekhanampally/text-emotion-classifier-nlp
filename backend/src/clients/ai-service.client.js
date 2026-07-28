@@ -1,6 +1,7 @@
 ﻿import axios from "axios";
 import { env } from "../config/env.js";
 import { AppError } from "../middleware/errors.js";
+import { retry } from "../utils/retry.js";
 
 const client = axios.create({
   baseURL: env.AI_SERVICE_BASE_URL,
@@ -13,9 +14,32 @@ const client = axios.create({
 
 export async function requestPrediction({ text, requestId }) {
   try {
-    const response = await client.post("/internal/v1/predictions", { text, requestId }, {
-      headers: { "x-request-id": requestId }
-    });
+    const response = await retry(
+      () =>
+        client.post(
+          "/internal/v1/predictions",
+          { text, requestId },
+          {
+            headers: {
+              "x-request-id": requestId
+            }
+          }
+        ),
+      {
+        retries: 1,
+        delay: 5000,
+        shouldRetry: (error) => {
+          const status = error.response?.status;
+
+          return (
+            status === 502 ||
+            status === 503 ||
+            status === 504 ||
+            error.code === "ECONNABORTED"
+          );
+        }
+      }
+    );
 
     return response.data;
   } catch (error) {
