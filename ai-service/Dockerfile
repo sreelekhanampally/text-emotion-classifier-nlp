@@ -5,17 +5,15 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     NLTK_DATA=/app/nltk_data \
     NLTK_DATA_PATH=/app/nltk_data \
-    MODEL_BUNDLE_PATH=/app/models \
-    PORT=8000
+    MODEL_BUNDLE_PATH=/app/models
 
 WORKDIR /app
 
-COPY ai-service/requirements.txt /tmp/requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
     && python -m nltk.downloader -d /app/nltk_data punkt_tab stopwords wordnet
 
-COPY requirements.txt /tmp/requirements.txt
 COPY app /app/app
 COPY models /app/models
 COPY .env.example /app/.env.example
