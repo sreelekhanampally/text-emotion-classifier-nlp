@@ -71,6 +71,19 @@ def build_preprocessor(settings: Settings) -> TextPreprocessor:
     nltk_data_path = Path(settings.nltk_data_path)
     if str(nltk_data_path) not in nltk.data.path:
         nltk.data.path.insert(0, str(nltk_data_path))
+    import os
+
+    print("NLTK DATA PATHS:", nltk.data.path)
+    print("Configured path:", nltk_data_path)
+
+    if nltk_data_path.exists():
+        print("Contents of nltk_data:")
+        for root, dirs, files in os.walk(nltk_data_path):
+            print(root)
+            for f in files[:5]:
+                print("  ", f)
+    else:
+        print("NLTK data directory does not exist!")
 
     for resource in _REQUIRED_NLTK_RESOURCES:
         try:
