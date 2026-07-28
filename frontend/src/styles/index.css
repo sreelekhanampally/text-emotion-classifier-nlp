@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                              */
+/* ------------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+  --scroll-color: rgba(139, 92, 246, 0.35);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background: #0A0514;
+}
+
+body {
+  font-feature-settings: 'ss01', 'cv11', 'cv02';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Selection */
+::selection {
+  background: rgba(168, 85, 247, 0.35);
+  color: #fff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-color);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.55);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Components                                                        */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
+
+  /* Glass card */
+  .glass {
+    @apply relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl;
+    box-shadow:
+      0 10px 40px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+  .glass-strong {
+    @apply relative rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] to-white/[0.02] backdrop-blur-2xl;
+    box-shadow:
+      0 20px 80px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      120deg,
+      #C084FC 0%,
+      #A855F7 30%,
+      #8B5CF6 55%,
+      #C4B5FD 80%,
+      #A78BFA 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientText 8s ease-in-out infinite;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-2xl px-6 py-3 font-semibold text-white transition-all duration-300;
+    background: linear-gradient(135deg, #7C3AED 0%, #A855F7 55%, #6D28D9 100%);
+    box-shadow: 0 10px 40px rgba(124, 58, 237, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px rgba(124, 58, 237, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-3 text-ink-1 backdrop-blur-md transition-all duration-300 hover:bg-white/[0.06] hover:border-white/20;
+  }
+
+  /* Chip / badge */
+  .chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-ink-2 backdrop-blur-md;
+  }
+
+  /* Hair line divider */
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent;
+  }
+
+  /* Focus ring */
+  .ring-brand {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Utilities                                                         */
+/* ------------------------------------------------------------------ */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .mask-fade-b {
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  }
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(139, 92, 246, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.08) 1px, transparent 1px);
+    background-size: 42px 42px;
+  }
+}
+
+/* Range/textarea niceties */
+textarea {
+  resize: none;
+}
