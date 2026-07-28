@@ -1,61 +1,69 @@
 # 🧠 EmotionSense AI
 
-> **Production-Ready NLP API for Real-Time Emotion Classification**
-
 <p align="left">
-  <a href="https://www.python.org/">
-    <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white">
-  </a>
-  <a href="https://fastapi.tiangolo.com/">
-    <img src="https://img.shields.io/badge/FastAPI-Production-009688?style=for-the-badge&logo=fastapi&logoColor=white">
-  </a>
-  <a href="https://scikit-learn.org/">
-    <img src="https://img.shields.io/badge/scikit--learn-Machine%20Learning-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white">
-  </a>
-  <a href="https://www.nltk.org/">
-    <img src="https://img.shields.io/badge/NLTK-NLP-4B8BBE?style=for-the-badge">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge">
-  </a>
+
+<img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white">
+
+<img src="https://img.shields.io/badge/FastAPI-Production-009688?style=for-the-badge&logo=fastapi&logoColor=white">
+
+<img src="https://img.shields.io/badge/scikit--learn-Machine%20Learning-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white">
+
+<img src="https://img.shields.io/badge/NLTK-NLP-4B8BBE?style=for-the-badge">
+
+<img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge">
+
 </p>
 
----
-
-# 📌 Executive Summary
-
-EmotionSense AI is a production-ready NLP API that predicts **six human emotions** from natural language text using a classical Machine Learning pipeline.
-
-Version 1 combines **TF-IDF Vectorization** with a **Calibrated Linear Support Vector Machine (Linear SVM)** and serves predictions through a **FastAPI REST API** optimized for low-latency inference.
-
-The project demonstrates the complete ML workflow from preprocessing and feature engineering to model deployment and real-time prediction.
+Production-ready full-stack AI application for real-time emotion classification from natural language text using a FastAPI inference service, Express.js backend, React frontend, and a classical NLP pipeline powered by TF-IDF and a Calibrated Linear SVM.
 
 ---
 
-# ⚡ Key Performance
+# Overview
 
-| Metric | Value |
-|:------|:------|
-| **Model** | Calibrated Linear SVM |
-| **Feature Extraction** | TF-IDF Vectorizer |
-| **Accuracy** | **90.22%** |
-| **Emotion Classes** | 6 |
-| **Average Inference Time** | **<10 ms** |
-| **Framework** | FastAPI + Uvicorn |
-| **Prediction Output** | Emotion + Confidence + Top-3 Predictions |
-| **Version** | 1.0 |
+EmotionSense AI demonstrates an end-to-end machine learning system, covering data preprocessing, model training, API serving, deployment, and frontend integration.
 
----
+The project is designed to classify user text into one of six emotions while exposing a lightweight REST API suitable for production environments. It emphasizes modular architecture, fast inference, maintainability, and reproducible machine learning workflows.
 
-# 😊 Supported Emotions
+The repository contains four independent but connected components:
 
-| 😊 Joy | 😢 Sadness | 😠 Anger |
-|:------:|:----------:|:--------:|
-| 😨 Fear | ❤️ Love | 😲 Surprise |
+| Component | Purpose |
+|-----------|---------|
+| **AI Service** | FastAPI inference service serving the trained emotion classifier |
+| **Backend API** | Express.js application responsible for business logic and API integration |
+| **Frontend** | React application for user interaction |
+| **Demo App** | Streamlit interface for quick model experimentation |
 
 ---
 
-# 🔄 NLP Pipeline
+# Architecture
+
+## System Architecture
+
+```text
+                    User
+                      │
+                      ▼
+              React Frontend (Vercel)
+                      │
+                      ▼
+            Express Backend (Render)
+                      │
+                      ▼
+        FastAPI AI Inference Service
+      (Hugging Face Docker Spaces)
+                      │
+                      ▼
+         TF-IDF + Calibrated Linear SVM
+                      │
+                      ▼
+            Emotion Prediction API
+```
+
+The frontend communicates with the Express backend, which delegates emotion prediction requests to the FastAPI inference service. The AI service loads the trained model during application startup and returns predictions with calibrated confidence scores through a REST interface.
+
+---
+
+## Machine Learning Pipeline
 
 ```text
 Raw Text
@@ -64,68 +72,152 @@ Raw Text
 Text Preprocessing
     │
     ▼
-TF-IDF Vectorizer
+TF-IDF Vectorization
     │
     ▼
 Calibrated Linear SVM
     │
     ▼
-JSON API Response
+Emotion Prediction
+    │
+    ▼
+JSON Response
 ```
 
----
-
-# 🔍 Machine Learning Pipeline
-
-## ✅ Text Preprocessing
-
-The input text is cleaned before feature extraction using:
-
-- Lowercase normalization
-- URL & digit removal
-- Punctuation filtering
-- English stopword removal
-- WordNet lemmatization
+The inference pipeline performs text preprocessing before transforming input into TF-IDF features. These features are passed to a calibrated Linear Support Vector Machine that predicts one of six supported emotions and returns confidence scores together with ranked predictions.
 
 ---
 
-## ✅ Feature Extraction
+## Repository Structure
 
-The cleaned text is converted into numerical features using **TF-IDF Vectorization** with **unigrams** and **bigrams**.
+```text
+EmotionSense-AI
+│
+├── ai-demo/                  # Streamlit demonstration
+│
+├── ai-service/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── core/
+│   │   ├── inference/
+│   │   ├── preprocessing/
+│   │   ├── schemas/
+│   │   └── main.py
+│   │
+│   ├── models/
+│   ├── tests/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── .env.example
+│
+├── backend/
+│   ├── src/
+│   ├── tests/
+│   ├── package.json
+│   └── .env.example
+│
+├── notebooks/
+├── data/
+├── screenshots/
+└── README.md
+```
+
+The repository separates training, inference, backend services, frontend, and demonstration applications into independent modules, allowing each component to evolve without tightly coupling the overall system.
+
+---
+# Features
+
+## AI Features
+
+- Classical NLP pipeline using **TF-IDF Vectorization** and a **Calibrated Linear SVM**
+- Real-time emotion prediction with **calibrated confidence scores**
+- Top-3 ranked emotion predictions
+- Six supported emotion classes
+- Text preprocessing with:
+  - Lowercase normalization
+  - URL and digit removal
+  - Punctuation filtering
+  - English stopword removal
+  - WordNet lemmatization
+- Modular preprocessing and inference pipelines
+- Serialized model artifacts for reproducible inference
 
 ---
 
-## ✅ Emotion Classification
+## Backend Features
 
-The TF-IDF features are passed to a **Calibrated Linear SVM**, which predicts one of six emotions and generates calibrated confidence scores using `CalibratedClassifierCV`.
-
----
-
-# 💡 Why Linear SVM?
-
-Linear SVM was chosen because it performs exceptionally well on sparse TF-IDF features while remaining lightweight enough for production APIs.
-
-### Advantages
-
-- Fast inference
-- Low memory usage
-- Strong generalization on text data
-- Excellent performance on sparse feature spaces
-
-Since Linear SVM does not produce probabilities by default, **CalibratedClassifierCV** is used to generate reliable confidence scores.
+- RESTful inference API built with **FastAPI**
+- Express.js backend for full-stack integration
+- Pydantic request and response validation
+- Centralized configuration using environment variables
+- Health monitoring endpoint
+- Lightweight JSON-based communication
+- Modular project architecture for maintainability
 
 ---
 
-# 🚀 API Endpoints
+## Production Features
 
-| Endpoint | Method | Description |
-|----------|:------:|-------------|
-| `/health` | GET | Service health check |
-| `/predict` | POST | Predict emotion from text |
+- Dockerized AI inference service
+- Startup model loading to eliminate per-request disk I/O
+- Separate training and inference workflows
+- Versioned model artifacts
+- Environment-based configuration
+- Production-ready folder structure
+- Multi-service deployment architecture
 
 ---
 
-## Example Request
+# Technology Stack
+
+| Layer | Technologies |
+|--------|--------------|
+| Frontend | React, Vite, JavaScript |
+| Backend | Node.js, Express.js |
+| AI Service | FastAPI, Uvicorn |
+| Machine Learning | Scikit-learn, NumPy, Joblib |
+| NLP | TF-IDF, NLTK, WordNet |
+| Validation | Pydantic |
+| Containerization | Docker |
+| Deployment | Hugging Face Spaces, Render, Vercel |
+
+---
+
+# Performance
+
+| Metric | Value |
+|---------|-------|
+| Model | Calibrated Linear SVM |
+| Feature Extraction | TF-IDF Vectorizer |
+| Accuracy | **90.22%** |
+| Emotion Classes | **6** |
+| Average Inference Time | **< 10 ms** |
+| Prediction Output | Emotion + Confidence + Top-3 Predictions |
+| Framework | FastAPI + Uvicorn |
+| Current Version | 1.0 |
+
+---
+
+## Supported Emotions
+
+| Joy | Sadness | Anger |
+|:---:|:--------:|:-----:|
+| Fear | Love | Surprise |
+
+---
+
+# API Reference
+
+## Endpoints
+
+| Method | Endpoint | Description |
+|:------:|----------|-------------|
+| GET | `/health` | Service health check |
+| POST | `/predict` | Predict emotion from input text |
+
+---
+
+### Request
 
 ```http
 POST /predict
@@ -139,7 +231,7 @@ POST /predict
 
 ---
 
-## Example Response
+### Response
 
 ```json
 {
@@ -153,6 +245,10 @@ POST /predict
     {
       "emotion": "surprise",
       "confidence": 0.01
+    },
+    {
+      "emotion": "love",
+      "confidence": 0.01
     }
   ],
   "processing_time_ms": 8.1,
@@ -162,27 +258,63 @@ POST /predict
 
 ---
 
-# 🛠️ Installation
+# Installation
+
+Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/EmotionSense-AI.git
+git clone https://github.com/sreelekhanampally/text-emotion-classifier-nlp.git
 
 cd EmotionSense-AI
+```
 
-python -m venv venv
+---
+
+## AI Service
+
+```bash
+cd ai-service
+
+python -m venv .venv
 
 # Windows
-venv\Scripts\activate
+.venv\Scripts\activate
 
-# Linux / macOS
-source venv/bin/activate
+# Linux/macOS
+source .venv/bin/activate
 
 pip install -r requirements.txt
 
 uvicorn app.main:app --reload
 ```
 
-Interactive API Documentation:
+---
+
+## Backend
+
+```bash
+cd backend
+
+npm install
+
+npm run dev
+```
+
+---
+
+## Streamlit Demo
+
+```bash
+cd ai-demo
+
+pip install -r requirements.txt
+
+streamlit run app.py
+```
+
+---
+
+Interactive API documentation:
 
 ```
 http://127.0.0.1:8000/docs
@@ -190,60 +322,52 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# 📂 Project Structure
+# Deployment
 
-```text
-EmotionSense-AI
-│
-├── ai-service
-│   ├── app
-│   │   ├── api
-│   │   ├── core
-│   │   ├── inference
-│   │   ├── middleware
-│   │   ├── preprocessing
-│   │   ├── schemas
-│   │   ├── services
-│   │   └── main.py
-│   │
-│   ├── models
-│   └── requirements.txt
-│
-├── notebooks
-├── data
-├── README.md
-└── LICENSE
-```
+| Component | Platform |
+|-----------|----------|
+| Frontend | Vercel |
+| Backend | Render |
+| AI Service | Hugging Face Docker Spaces |
+| Demo Application | Hugging Face Spaces |
+
+The frontend communicates with the Express backend, which forwards inference requests to the FastAPI AI service running as a Docker container. This separation enables independent deployment, scaling, and future model upgrades without impacting the client application.
+
+---
+# Engineering Highlights
+
+The project focuses on building a maintainable and production-oriented machine learning system rather than only maximizing classification accuracy.
+
+### Model Selection
+
+- **Linear SVM** was selected because it performs efficiently on sparse TF-IDF feature spaces while providing fast inference and low memory usage.
+- **CalibratedClassifierCV** generates reliable confidence scores without replacing the underlying classifier.
+
+### System Design
+
+- Modular architecture separating preprocessing, inference, API, backend, and training components.
+- FastAPI inference service with typed request and response validation using Pydantic.
+- Model artifacts loaded once during application startup to eliminate repeated disk I/O.
+- Independent training and inference pipelines simplify future model upgrades.
+- Environment-based configuration for deployment portability.
+- Dockerized AI service for reproducible local and production environments.
 
 ---
 
-# ⚙️ Engineering Highlights
+# Version Evolution
 
-| Feature | Description |
-|----------|-------------|
-| Modular Architecture | Clean separation of preprocessing, inference, and API layers |
-| Startup Model Loading | Model artifacts are loaded once during application startup |
-| Request Validation | Typed request/response schemas using Pydantic |
-| Dependency Injection | Simplifies service initialization |
-| Environment Configuration | Runtime settings managed through environment variables |
-| REST API | Lightweight FastAPI endpoints |
-| Health Monitoring | Built-in health check endpoint |
-| Model Versioning | Serialized ML artifacts tracked independently |
+## Version 1
 
----
+### Key Capabilities
 
-# 📚 Technology Stack
+- TF-IDF Vectorization
+- Calibrated Linear SVM
+- FastAPI inference service
+- Six emotion classes
+- Confidence scores
+- Docker deployment
 
-| Category | Technologies |
-|----------|--------------|
-| Language | Python 3.11 |
-| Machine Learning | Scikit-Learn, NumPy, Joblib |
-| NLP | NLTK, TF-IDF, WordNet Lemmatizer |
-| Backend | FastAPI, Uvicorn, Pydantic |
-
----
-
-# ⚠️ Current Limitations (Version 1)
+### Known Limitations
 
 Although Version 1 achieves **90.22% accuracy**, it has several known limitations.
 
@@ -253,7 +377,7 @@ Although Version 1 achieves **90.22% accuracy**, it has several known limitation
 - Internet slang and unseen vocabulary reduce prediction quality.
 - Minority emotion classes receive lower confidence.
 
-### Example
+#### Example
 
 ```text
 Input
@@ -275,13 +399,13 @@ Prediction
 
 ---
 
-# 🚀 Version 2 Improvements
+## 🚀 Version 2 Improvements
 
 Version 2 keeps the same dataset and the same classical stack (**TF-IDF + Calibrated Linear SVM**), but improves one major weakness of the baseline: **understanding negated emotions** (e.g., *"I am not happy"*).
 
 ---
 
-## ✅ Preprocessing
+### ✅ Preprocessing
 
 - **Contraction expansion** — `contractions.fix()` runs before tokenization, converting *can't*, *don't*, and *won't* into their expanded forms so negation words are preserved.
 
@@ -289,16 +413,16 @@ Version 2 keeps the same dataset and the same classical stack (**TF-IDF + Calibr
 
 - **Clause-scoped negation marking** — Sentences are split into clauses using punctuation (`. , ; ! ?`) and the connector **but**. Every word after a negation is prefixed with `NEG_`, allowing the model to distinguish between positive and negated emotions.
 
-  ```text
-  happy      → happy
-  not happy  → not NEG_happy
-  ```
+```text
+happy      → happy
+not happy  → not NEG_happy
+```
 
 - **Removed the `len(token) > 2` filter** — Keeps meaningful short words like `no` that were previously discarded.
 
 ---
 
-## ✅ Model Engineering
+### ✅ Model Engineering
 
 - Wrapped **TF-IDF + Calibrated LinearSVC** into a single Scikit-Learn **Pipeline**, ensuring the same preprocessing is applied during training and inference.
 
@@ -310,7 +434,7 @@ Version 2 keeps the same dataset and the same classical stack (**TF-IDF + Calibr
 
 ---
 
-## ✅ Negation-Aware Data Augmentation
+### ✅ Negation-Aware Data Augmentation
 
 Dataset analysis showed that negated emotion phrases were extremely rare.
 
@@ -335,7 +459,7 @@ The augmented samples are merged with the original dataset **before the train/te
 
 ---
 
-## 📊 Performance
+### 📊 Performance
 
 | Version | Accuracy | Highlights |
 |---------|---------:|-----------|
@@ -346,7 +470,7 @@ The small drop in accuracy is expected because introducing `NEG_` features incre
 
 ---
 
-## ✅ Negation Sanity Check
+### ✅ Negation Sanity Check
 
 | Input | Prediction |
 |-------|------------|
@@ -359,7 +483,7 @@ The small drop in accuracy is expected because introducing `NEG_` features incre
 
 ---
 
-## ⚠️ Current Limitations
+### ⚠️ Current Limitations
 
 - Verb-based negation (e.g., *I never wanted this*) remains challenging.
 - Sarcasm and irony are not handled.
@@ -367,24 +491,33 @@ The small drop in accuracy is expected because introducing `NEG_` features incre
 - Rare unseen emotion words may still be misclassified.
 
 ---
-# 🚀 Version Roadmap
 
-| Version | Status | Highlights |
-|----------|:------:|------------|
-| ✅ Version 1 | Completed | Baseline TF-IDF + Calibrated Linear SVM, FastAPI deployment |
-| 🚀 Version 2 | Completed | Negation handling, Pipeline, GridSearchCV, Data Augmentation |
-| 🔬 Version 3 | Planned | Sentence Embeddings, GoEmotions, DistilBERT Evaluation |
+## Version 3 (Planned)
+
+The next iteration will focus on contextual language understanding while preserving the existing production architecture.
+
+### Planned Enhancements
+
+- Evaluate transformer-based sentence embeddings.
+- Explore the GoEmotions dataset.
+- Benchmark DistilBERT against the classical NLP pipeline.
+- Compare latency, memory usage, and prediction quality.
+- Investigate multi-label emotion classification.
 
 ---
 
-## 📚 Key Learnings
+# Roadmap
 
-- Classical NLP pipelines
-- Negation-aware feature engineering
-- Targeted data augmentation
-- Hyperparameter tuning with GridSearchCV
-- Model serialization for production deployment
-- FastAPI model serving
+- [x] Baseline TF-IDF + Calibrated Linear SVM
+- [x] FastAPI inference service
+- [x] Dockerized AI deployment
+- [x] Negation-aware preprocessing
+- [x] Hyperparameter tuning with GridSearchCV
+- [x] Targeted synthetic data augmentation
+- [ ] Transformer-based emotion classification
+- [ ] Expanded emotion taxonomy
+- [ ] Multi-label emotion prediction
+- [ ] Model benchmarking dashboard
 
 ---
 
